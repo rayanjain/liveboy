@@ -35,7 +35,13 @@
         </div>
       </div>
 
-      <VideoDetails @signinfirst="pay" v-bind="videoData" v-else />
+      <VideoDetails
+        @reloadwatch="loadVideo()"
+        @signinfirst="$refs['navbar'].launchSignInModal()"
+        :id="id"
+        v-bind="videoData"
+        v-else
+      />
 
       <div
         class="col-md-4 p-md-3"
@@ -108,10 +114,6 @@ export default {
           }
         })
     },
-    pay() {
-      if (this.authToken) console.log('Pay Up')
-      else this.$refs['navbar'].launchSignInModal()
-    },
   },
   computed: {
     authToken() {
@@ -145,12 +147,14 @@ export default {
   height: 100%;
   overflow: hidden;
 }
-.pay-btn {
+.center-of-image {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
+}
+.pay-btn {
   color: white;
   font-size: 16px;
   padding: 12px 24px;
@@ -158,6 +162,13 @@ export default {
   cursor: pointer;
   border-radius: 5px;
   text-align: center;
+}
+.pay-alert {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }
 
 @media (min-width: 768px) {

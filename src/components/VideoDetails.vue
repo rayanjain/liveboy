@@ -1,5 +1,18 @@
 <template>
   <div class="col-md-8 p-md-3">
+    <div
+      class="alert alert-danger alert-dismissible fade show  mb-md-3 mb-0"
+      role="alert"
+      v-if="paymentError != ''"
+    >
+      {{ paymentError }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
     <div v-if="!paymentstatus" style="position: relative;">
       <img
         :src="thumbnail"
@@ -8,7 +21,24 @@
         height="300"
         style="width: 100%; height: auto; opacity: 0.5;"
       />
-      <button @click="$emit('signinfirst')" class="pay-btn btn-success">
+      <button
+        class="pay-btn center-of-image"
+        type="button"
+        v-if="gatewayLoading"
+        disabled
+      >
+        <span
+          class="spinner-grow spinner-grow-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        Loading...
+      </button>
+      <button
+        @click="payToWatch"
+        class="center-of-image pay-btn btn-success"
+        v-else
+      >
         Pay
         {{
           price % 1 == 0 ? `&#8377; ${price}` : `&#8377; ${price.toFixed(2)}`
@@ -62,10 +92,13 @@
 </template>
 
 <script>
+import axios from 'axios'
 import VideoPlayer from '@/components/VideoPlayer'
+//import Razorpay from 'razorpay'
 
 export default {
   props: {
+    id: String,
     paymentstatus: Boolean,
     thumbnail: String,
     videotitle: String,
@@ -80,7 +113,80 @@ export default {
     VideoPlayer,
   },
   data() {
-    return {}
+    return {
+      paymentError: '',
+      gatewayLoading: false,
+    }
+  },
+  methods: {
+    payToWatch() {
+      if (this.authToken) {
+        this.gatewayLoading = true
+        this.paymentError = ''
+
+        axios
+          .get(`/startpayment/${this.id}`, {
+            headers: { Authorization: `Bearer ${this.authToken}` },
+          })
+          .then((response) => {
+            this.gatewayLoading = false
+            const options = {
+              key: 'rzp_test_KRkts81uzp4oLp',
+              name: this.videotitle,
+              description: this.username,
+              image: this.thumbnail,
+              order_id: response.data.order_id,
+              prefill: {
+                email: this.$store.state.userInfo.email || '',
+              },
+              theme: {
+                color: 'white',
+              },
+              external: {
+                wallets: ['paytm'],
+              },
+              handler: (resp) => {
+                this.paymentHandler(resp)
+              },
+            }
+            var rzp = new window.Razorpay(options)
+            rzp.on('payment.failed', (res) => {
+              this.paymentError = res.error.description
+            })
+            rzp.open()
+          })
+          .catch((err) => {
+            this.gatewayLoading = false
+            if (err.response) {
+              this.paymentError = 'Payment Failed! Try Again'
+            } else {
+              this.paymentError = 'Network Error'
+            }
+          })
+      } else this.$emit('signinfirst')
+    },
+    paymentHandler(resp) {
+      this.gatewayLoading = true
+      this.paymentError = ''
+      axios
+        .post('/payment', resp)
+        .then(() => {
+          this.$emit('reloadwatch')
+        })
+        .catch((err) => {
+          this.gatewayLoading = false
+          if (err.response) {
+            this.paymentError = 'Payment Failed! Try Again'
+          } else {
+            this.paymentError = 'Network Error'
+          }
+        })
+    },
+  },
+  computed: {
+    authToken() {
+      return this.$store.state.token
+    },
   },
 }
 </script>
