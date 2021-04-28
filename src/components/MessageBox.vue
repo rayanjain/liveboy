@@ -92,7 +92,8 @@ export default {
       viewers: 0,
       messages: [],
       showDown: false,
-      webSocket: new WebSocket(this.messageURL),
+      webSocket: null, //new WebSocket(this.messageURL),
+      socketConnected: false,
     }
   },
   mounted() {
@@ -100,39 +101,38 @@ export default {
   },
   methods: {
     getMessages() {
-      {
-        this.webSocket.onopen = () => {
-          this.webSocket.send(
-            JSON.stringify({ token: this.$store.state.token, id: 'this.id' })
-          )
+      this.webSocket = new WebSocket(this.messageURL)
+      this.webSocket.onopen = () => {
+        this.webSocket.send(
+          JSON.stringify({ token: this.$store.state.token, id: 'this.id' })
+        )
+      }
+
+      this.webSocket.onmessage = (event) => {
+        if (
+          this.$refs['messageArea'].scrollTop +
+            this.$refs['messageArea'].clientHeight !=
+          this.$refs['messageArea'].scrollHeight
+        )
+          this.showDown = true
+        else {
+          setTimeout(() => {
+            this.$refs['messageArea'].scrollTop = this.$refs[
+              'messageArea'
+            ].scrollHeight
+          }, 500)
         }
 
-        this.webSocket.onmessage = (event) => {
-          if (
-            this.$refs['messageArea'].scrollTop +
-              this.$refs['messageArea'].clientHeight !=
-            this.$refs['messageArea'].scrollHeight
-          )
-            this.showDown = true
-          else {
-            setTimeout(() => {
-              this.$refs['messageArea'].scrollTop = this.$refs[
-                'messageArea'
-              ].scrollHeight
-            }, 500)
-          }
+        const m = JSON.parse(event.data)
+        if (m.viewers) this.viewers = m.viewers
+        else if (!m.message) {
+          this.viewers = this.viewers + 1
+          this.messages.push(m)
+        } else this.messages.push(m)
+      }
 
-          const m = JSON.parse(event.data)
-          if (m.viewers) this.viewers = m.viewers
-          else if (!m.message) {
-            this.viewers = this.viewers + 1
-            this.messages.push(m)
-          } else this.messages.push(m)
-        }
-
-        this.webSocket.onclose = () => {
-          this.getMessages()
-        }
+      this.webSocket.onclose = () => {
+        this.getMessages()
       }
     },
     sendMessage() {
