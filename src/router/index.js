@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Watch from '../views/Watch.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
 import GoLive from '../views/GoLive.vue'
+import Settings from '../views/Settings.vue'
 
 const routes = [
   {
@@ -25,6 +26,19 @@ const routes = [
     path: '/golive',
     name: 'GoLive',
     component: GoLive,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.token) next()
+      else next('/')
+    },
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.token) next()
+      else next('/')
+    },
   },
 ]
 

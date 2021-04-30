@@ -206,7 +206,9 @@ export default {
     stopStream() {
       this.loading = true
       axios
-        .delete(`/stream/${this._id}`)
+        .delete(`/stream/${this._id}`, {
+          headers: { Authorization: `Bearer ${this.$store.state.token}` },
+        })
         .then(() => {
           this.$emit('reloadStreams')
           this.loading = false
