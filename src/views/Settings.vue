@@ -211,12 +211,16 @@
           </div>
         </div>
       </div>
+      <div class="col mt-3">
+        <PaymentSetting />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar'
+import PaymentSetting from '@/components/PaymentSetting'
 import axios from 'axios'
 import Croppie from 'croppie'
 import 'croppie/croppie.css'
@@ -224,6 +228,7 @@ import 'croppie/croppie.css'
 export default {
   components: {
     NavBar,
+    PaymentSetting,
   },
   data() {
     return {
@@ -260,7 +265,6 @@ export default {
         })
     },
     processImage(e) {
-      console.log(this.cropper)
       this.$refs['openpp'].click()
       setTimeout(() => {
         this.cropper = new Croppie(this.$refs['cropBox'], {

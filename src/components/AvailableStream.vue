@@ -6,6 +6,24 @@
       </strong>
     </div>
     <div class="card-body">
+      <div class="mb-3">
+        <div class="d-flex justify-content-between mb-2">
+          <div class="align-self-center">
+            Video Link
+          </div>
+          <div class="">
+            <button
+              class="btn btn-outline-secondary ms-2"
+              @click="videoLinkCopy"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+        <a :href="`https://liveboy.netlify.app/watch/${_id}`" target="_blank">
+          https://liveboy.netlify.app/watch/{{ _id }}
+        </a>
+      </div>
       <div class="d-flex">
         <div class="col-6 align-self-center">
           <img
@@ -196,11 +214,14 @@ export default {
   },
   methods: {
     streamKeyCopy() {
-      navigator.clipboard.writeText('howboutsomeshots').then(() => {})
+      navigator.clipboard.writeText(this.streamkey).then(() => {})
     },
     serverCopy() {
+      navigator.clipboard.writeText(this.serverurl).then(() => {})
+    },
+    videoLinkCopy() {
       navigator.clipboard
-        .writeText('rtmp://liveboy.netlify.com/tkmmptrujgg')
+        .writeText(`https://liveboy.netlify.app/watch/${this._id}`)
         .then(() => {})
     },
     stopStream() {

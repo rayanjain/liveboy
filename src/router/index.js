@@ -4,6 +4,7 @@ import Watch from '../views/Watch.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
 import GoLive from '../views/GoLive.vue'
 import Settings from '../views/Settings.vue'
+import Payments from '../views/Payments.vue'
 
 const routes = [
   {
@@ -35,6 +36,15 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.token) next()
+      else next('/')
+    },
+  },
+  {
+    path: '/payments',
+    name: 'Payments',
+    component: Payments,
     beforeEnter: (to, from, next) => {
       if (localStorage.token) next()
       else next('/')

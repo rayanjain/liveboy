@@ -59,13 +59,33 @@
       /> -->
       <VideoPlayer :source="videoURL" />
     </div>
-    <div class="p-2">
-      <h5 class="mb-0 text-truncate">
+    <div class="p-1">
+      <!-- <h5 class="mb-0 text-truncate">
         {{ videotitle }}
-      </h5>
+      </h5> -->
+      <div class="d-flex">
+        <div
+          class="bg-primary align-self-center"
+          style="width: 60px; height: 60px"
+        >
+          <img
+            class="rounded-circle"
+            :src="useravatar"
+            style="width: 100%;"
+            alt="DP"
+          />
+        </div>
+        <div
+          class=" p-2 align-self-center text-truncate"
+          style="width: calc(100% - 60px);"
+        >
+          <h5 class="text-truncate">{{ videotitle }}</h5>
+          <b class="text-secondary">{{ username }}</b>
+        </div>
+      </div>
     </div>
 
-    <div class="border p-1">
+    <!-- <div class="border p-1">
       <div class="d-flex">
         <div class="" style="width: 60px; height: 60px">
           <img
@@ -87,7 +107,7 @@
           <button v-else class="btn btn-primary">Follow</button>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -106,8 +126,6 @@ export default {
     useravatar: String,
     videoURL: String,
     price: Number,
-    followers: Number,
-    following: Boolean,
   },
   components: {
     VideoPlayer,

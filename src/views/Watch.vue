@@ -10,14 +10,12 @@
             <h5>{{ videoError }}</h5>
           </div>
         </div>
-        <div class="p-2">
-          <h5 class="mb-0 text-truncate">
+        <div class="p-1">
+          <!-- <h5 class="mb-0 text-truncate">
             <div
               style="background: #f2f2f2; min-height: 1.25em; line-height: 1.25; width: 50%"
             ></div>
-          </h5>
-        </div>
-        <div class="border p-1">
+          </h5> -->
           <div class="d-flex">
             <div
               style="width: 60px; height: 60px; background:#f2f2f2; border-radius: 50%"
@@ -33,6 +31,22 @@
             </div>
           </div>
         </div>
+        <!-- <div class="border p-1">
+          <div class="d-flex">
+            <div
+              style="width: 60px; height: 60px; background:#f2f2f2; border-radius: 50%"
+            ></div>
+            <div class=" p-2 flex-fill align-self-center text-truncate">
+              <div
+                class="mb-1"
+                style="background: #f2f2f2; min-height: 1.25em; line-height: 1.25; width: 70%"
+              ></div>
+              <div
+                style="background: #f2f2f2; min-height: 1.25em; line-height: 1.25; width: 40%"
+              ></div>
+            </div>
+          </div>
+        </div> -->
       </div>
 
       <VideoDetails
