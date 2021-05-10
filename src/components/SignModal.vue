@@ -228,14 +228,16 @@
             </div>
             <!-- Sign In with google button -->
             <div class="mt-2" align="center">
-              <div
+              <div id="my-signin2"></div>
+              <!-- <div
                 class="g-signin2"
-                data-onsuccess="onSignIn"
-                data-theme="light"
+                @success="onGSignIn"
+                @failure="onGFailure"
+                data-theme="dark"
                 data-width="300"
                 data-height="50"
                 data-longtitle="true"
-              ></div>
+              ></div> -->
             </div>
             <!-- <div
               class="g-signin2"
@@ -288,7 +290,17 @@ export default {
       otp: '',
     }
   },
-  mounted() {},
+  mounted() {
+    window.gapi.signin2.render('my-signin2', {
+      scope: 'profile email',
+      width: 300,
+      height: 50,
+      longtitle: true,
+      theme: 'dark',
+      onsuccess: this.onGSuccess,
+      onfailure: this.onGFailure,
+    })
+  },
   methods: {
     signIn() {
       this.signInLoading = true
@@ -357,7 +369,10 @@ export default {
         })
     },
     onGSuccess(googleUser) {
-      console.log('Logged in as: ' + googleUser.getBasicProfile().getName())
+      console.log(googleUser.getBasicProfile().getId())
+      console.log(googleUser.getBasicProfile().getName())
+      console.log(googleUser.getBasicProfile().getImageUrl())
+      console.log(googleUser.getBasicProfile().getEmail())
     },
     onGFailure(err) {
       console.log(err)
