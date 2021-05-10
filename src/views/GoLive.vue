@@ -1,5 +1,5 @@
 <template>
-  <navBar />
+  <!-- <navBar /> -->
   <div class="container pt-md-5 pt-3 pb-md-5">
     <div class="row">
       <div class="col-md-8 mb-3">
@@ -203,7 +203,7 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar'
+//import NavBar from '@/components/NavBar'
 import AvailableStream from '@/components/AvailableStream'
 import NewStreamModal from '@/components/NewStreamModal'
 import CompletedStream from '@/components/CompletedStream'
@@ -212,7 +212,7 @@ import axios from 'axios'
 
 export default {
   components: {
-    NavBar,
+    //NavBar,
     AvailableStream,
     NewStreamModal,
     CompletedStream,

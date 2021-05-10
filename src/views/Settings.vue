@@ -1,5 +1,5 @@
 <template>
-  <NavBar ref="navBar" />
+  <!-- <NavBar ref="navBar" /> -->
   <div class="container mt-md-5 mt-3">
     <div class="row">
       <div class="col-md-6">
@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar'
+//import NavBar from '@/components/NavBar'
 import PaymentSetting from '@/components/PaymentSetting'
 import axios from 'axios'
 import Croppie from 'croppie'
@@ -227,7 +227,7 @@ import 'croppie/croppie.css'
 
 export default {
   components: {
-    NavBar,
+    //NavBar,
     PaymentSetting,
   },
   data() {
@@ -254,7 +254,8 @@ export default {
           }
         )
         .then(() => {
-          this.$refs['navBar'].getUserInfo()
+          //this.$refs['navBar'].getUserInfo()
+          this.$emit('getuserinfo')
           this.$refs['closeCUModal'].click()
           this.changeUsernameLoading = false
         })
@@ -307,7 +308,8 @@ export default {
             })
             .then(() => {
               this.changePPLoading = false
-              this.$refs['navBar'].getUserInfo()
+              //this.$refs['navBar'].getUserInfo()
+              this.$emit('getuserinfo')
               this.$refs['closepp'].click()
               this.cropper.destroy()
             })

@@ -1,5 +1,5 @@
 <template>
-  <NavBar />
+  <!-- <NavBar /> -->
   <div class="container-fluid mb-2">
     <div class="row">
       <div v-if="loadingStatus" class="col-sm-6 col-md-4 col-lg-3">
@@ -59,14 +59,14 @@
 <script>
 // @ is an alias to /src
 import axios from 'axios'
-import NavBar from '@/components/NavBar'
+//import NavBar from '@/components/NavBar'
 import VideoCard from '@/components/VideoCard'
 import VideoCardLoading from '@/components/VideoCardLoading'
 
 export default {
   name: 'Home',
   components: {
-    NavBar,
+    //NavBar,
     VideoCard,
     VideoCardLoading,
   },

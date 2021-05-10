@@ -1,5 +1,5 @@
 <template>
-  <NavBar ref="navbar" />
+  <!-- <NavBar ref="navbar" /> -->
   <div class="main-div">
     <div class="flex">
       <div class="col-md-8 p-md-3" v-if="videoLoading">
@@ -51,7 +51,7 @@
 
       <VideoDetails
         @reloadwatch="loadVideo()"
-        @signinfirst="$refs['navbar'].launchSignInModal()"
+        @signinfirst="this.$emit('signinfirst')"
         :id="id"
         v-bind="videoData"
         v-else
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar'
+//import NavBar from '@/components/NavBar'
 import VideoDetails from '@/components/VideoDetails'
 import MessageBox from '@/components/MessageBox'
 import axios from 'axios'
@@ -83,7 +83,7 @@ import axios from 'axios'
 export default {
   props: ['id'],
   components: {
-    NavBar,
+    //NavBar,
     VideoDetails,
     MessageBox,
   },

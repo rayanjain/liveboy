@@ -1,5 +1,5 @@
 <template>
-  <NavBar />
+  <!-- <NavBar /> -->
   <div class="d-flex justify-content-center container mt-3 mt-md-5">
     <div class="col-md-6 col">
       <h5 class="mb-3">Payment History</h5>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar'
+//import NavBar from '@/components/NavBar'
 import axios from 'axios'
 
 export default {
@@ -88,7 +88,7 @@ export default {
     }
   },
   components: {
-    NavBar,
+    //NavBar,
   },
   mounted() {
     this.loadHistory()
