@@ -228,7 +228,12 @@
             </div>
             <!-- Sign In with google button -->
             <div class="mt-2" align="center">
-              <div id="my-signin2"></div>
+              <div v-if="googleLoading" class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+              <div v-show="!googleLoading" id="my-signin2"></div>
             </div>
           </div>
         </div>
@@ -250,6 +255,7 @@ export default {
       signUpSuccess: '',
       signUpLoading: false,
       getOTPLoading: false,
+      googleLoading: false,
       //v-model data
       username: '',
       password: '',
@@ -261,14 +267,7 @@ export default {
     }
   },
   mounted() {
-    window.gapi.signin2.render('my-signin2', {
-      scope: 'profile email',
-      width: 300,
-      height: 50,
-      longtitle: true,
-      theme: 'dark',
-      onsuccess: this.onGSuccess,
-    })
+    this.renderGoogleButton()
   },
   methods: {
     signIn() {
@@ -337,9 +336,18 @@ export default {
           this.signUpError = err.response.data
         })
     },
+    renderGoogleButton() {
+      window.gapi.signin2.render('my-signin2', {
+        scope: 'profile email',
+        width: 300,
+        height: 50,
+        longtitle: true,
+        theme: 'dark',
+        onsuccess: this.onGSuccess,
+      })
+    },
     onGSuccess(googleUser) {
-      this.signInLoading = true
-      this.signUpLoading = true
+      this.googleLoading = true
       const id_token = googleUser.getAuthResponse().id_token
       axios
         .post('/login/googlesignin', {
@@ -349,8 +357,7 @@ export default {
           const auth2 = window.gapi.auth2.getAuthInstance()
           auth2.signOut()
 
-          this.signInLoading = false
-          this.signUpLoading = false
+          this.googleLoading = false
 
           localStorage.setItem('token', response.data)
           this.$store.commit('changeToken', response.data)
@@ -360,11 +367,7 @@ export default {
           const auth2 = window.gapi.auth2.getAuthInstance()
           auth2.signOut()
 
-          this.signInError = 'Some error occured'
-          this.signUpError = 'Some error occured'
-
-          this.signInLoading = false
-          this.signUpLoading = false
+          this.googleLoading = false
         })
     },
   },
