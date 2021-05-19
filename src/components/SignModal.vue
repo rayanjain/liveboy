@@ -301,8 +301,8 @@ export default {
       }
       axios
         .post('login/signup', {
-          newusername: this.newusername,
-          newpassword: this.newpassword,
+          username: this.newusername,
+          password: this.newpassword,
           email: this.email,
           otp: this.otp,
         })
@@ -349,26 +349,27 @@ export default {
     onGSuccess(googleUser) {
       this.googleLoading = true
       const id_token = googleUser.getAuthResponse().id_token
-      axios
-        .post('/login/googlesignin', {
-          id_token: id_token,
-        })
-        .then((response) => {
-          const auth2 = window.gapi.auth2.getAuthInstance()
-          auth2.signOut()
+      console.log(id_token)
+      // axios
+      //   .post('/login/googlesignin', {
+      //     id_token: id_token,
+      //   })
+      //   .then((response) => {
+      //     const auth2 = window.gapi.auth2.getAuthInstance()
+      //     auth2.signOut()
 
-          this.googleLoading = false
+      //     this.googleLoading = false
 
-          localStorage.setItem('token', response.data)
-          this.$store.commit('changeToken', response.data)
-          this.$refs['closeModal'].click()
-        })
-        .catch(() => {
-          const auth2 = window.gapi.auth2.getAuthInstance()
-          auth2.signOut()
+      //     localStorage.setItem('token', response.data)
+      //     this.$store.commit('changeToken', response.data)
+      //     this.$refs['closeModal'].click()
+      //   })
+      //   .catch(() => {
+      //     const auth2 = window.gapi.auth2.getAuthInstance()
+      //     auth2.signOut()
 
-          this.googleLoading = false
-        })
+      //     this.googleLoading = false
+      //   })
     },
   },
 }
