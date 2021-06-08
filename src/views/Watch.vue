@@ -60,7 +60,7 @@
       <div
         class="col-md-4 p-md-3"
         style="height: 100%; overflow: hidden;"
-        v-if="!videoData.messageURL"
+        v-if="!videoData.messageurl"
       >
         <div class="border h-100 d-flex flex-column justify-content-center">
           <div class="text-muted" style="text-align: center;">
@@ -69,7 +69,13 @@
         </div>
       </div>
 
-      <MessageBox :id="id" :messageURL="videoData.messageURL" v-else />
+      <MessageBox
+        :id="id"
+        :messageURL="
+          `wss://liveboy.centralindia.cloudapp.azure.com${videoData.messageurl}`
+        "
+        v-else
+      />
     </div>
   </div>
 </template>

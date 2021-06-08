@@ -35,13 +35,13 @@
         :key="payment._id"
       >
         <div class="card-header text-secondary bg-body" align="right">
-          <small>{{ payment.id }}</small>
+          <small>{{ payment.payment_id }}</small>
         </div>
         <div class="card-body">
           <div class="d-flex">
             <div class="col-4">
               <img
-                :src="payment.thumbnail"
+                :src="payment.video.thumbnail"
                 width="160"
                 height="90"
                 class="w-100"
@@ -50,7 +50,7 @@
             </div>
             <div class="col-8 ms-2">
               <div class="text-truncate">
-                <strong>{{ payment.title }}</strong>
+                <strong>{{ payment.video.videotitle }}</strong>
               </div>
               <div
                 class="mt-2"
@@ -62,8 +62,16 @@
                 <h5>
                   {{
                     payment.type == 'payment'
-                      ? `- &#8377; ${payment.amount}`
-                      : `+ &#8377; ${payment.amount}`
+                      ? `- &#8377; ${
+                          payment.amount % 1 == 0
+                            ? payment.amount
+                            : payment.amount.toFixed(2)
+                        }`
+                      : `+ &#8377; ${
+                          payment.amount % 1 == 0
+                            ? payment.amount
+                            : payment.amount.toFixed(2)
+                        }`
                   }}
                 </h5>
               </div>
@@ -98,7 +106,7 @@ export default {
       this.loading = true
       this.networkError = false
       axios
-        .get('/paymenthistory', {
+        .get('/payments/history', {
           headers: { Authorization: `Bearer ${this.$store.state.token}` },
         })
         .then((res) => {

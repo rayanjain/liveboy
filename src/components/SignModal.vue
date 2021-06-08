@@ -66,13 +66,12 @@
                   {{ signInError }}
                 </div>
                 <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
+                  <label for="email" class="form-label">Email</label>
                   <input
-                    type="text"
-                    autocapitalize="none"
+                    type="email"
                     class="form-control"
-                    id="username"
-                    v-model="username"
+                    id="email"
+                    v-model="email"
                     required
                   />
                 </div>
@@ -162,15 +161,15 @@
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
+                  <label for="newemail" class="form-label">Email</label>
                   <div class="input-group">
                     <input
                       type="email"
                       class="form-control"
                       aria-describedby="button-addon2"
                       required
-                      v-model="email"
-                      id="email"
+                      v-model="newemail"
+                      id="newemail"
                     />
                     <button
                       class="btn btn-outline-secondary"
@@ -257,12 +256,12 @@ export default {
       getOTPLoading: false,
       googleLoading: false,
       //v-model data
-      username: '',
+      email: '',
       password: '',
       newusername: '',
       newpassword: '',
       confirmpassword: '',
-      email: '',
+      newemail: '',
       otp: '',
     }
   },
@@ -274,12 +273,14 @@ export default {
       this.signInLoading = true
       this.signInError = ''
       axios
-        .post('/login/signin', {
-          username: this.username,
+        .post('/user/signin', {
+          email: this.email,
           password: this.password,
         })
         .then((response) => {
           this.signInLoading = false
+          this.email = ''
+          this.password = ''
           localStorage.setItem('token', response.data)
           this.$store.commit('changeToken', response.data)
           this.$refs['closeModal'].click()
@@ -300,14 +301,18 @@ export default {
         return
       }
       axios
-        .post('login/signup', {
+        .post('user/signup', {
           username: this.newusername,
           password: this.newpassword,
-          email: this.email,
+          email: this.newemail,
           otp: this.otp,
         })
         .then((response) => {
           this.signUpLoading = false
+          this.newusername = ''
+          this.newpassword = ''
+          this.newemail = ''
+          this.otp = ''
           localStorage.setItem('token', response.data)
           this.$store.commit('changeToken', response.data)
           this.$refs['closeModal'].click()
@@ -324,8 +329,8 @@ export default {
       this.signUpSuccess = ''
       this.getOTPLoading = true
       axios
-        .post('login/getotp', {
-          email: this.email,
+        .post('user/getotp', {
+          email: this.newemail,
         })
         .then((response) => {
           this.getOTPLoading = false
@@ -349,27 +354,26 @@ export default {
     onGSuccess(googleUser) {
       this.googleLoading = true
       const id_token = googleUser.getAuthResponse().id_token
-      console.log(id_token)
-      // axios
-      //   .post('/login/googlesignin', {
-      //     id_token: id_token,
-      //   })
-      //   .then((response) => {
-      //     const auth2 = window.gapi.auth2.getAuthInstance()
-      //     auth2.signOut()
+      axios
+        .post('/user/googlesignin', {
+          id_token: id_token,
+        })
+        .then((response) => {
+          const auth2 = window.gapi.auth2.getAuthInstance()
+          auth2.signOut()
 
-      //     this.googleLoading = false
+          this.googleLoading = false
 
-      //     localStorage.setItem('token', response.data)
-      //     this.$store.commit('changeToken', response.data)
-      //     this.$refs['closeModal'].click()
-      //   })
-      //   .catch(() => {
-      //     const auth2 = window.gapi.auth2.getAuthInstance()
-      //     auth2.signOut()
+          localStorage.setItem('token', response.data)
+          this.$store.commit('changeToken', response.data)
+          this.$refs['closeModal'].click()
+        })
+        .catch(() => {
+          const auth2 = window.gapi.auth2.getAuthInstance()
+          auth2.signOut()
 
-      //     this.googleLoading = false
-      //   })
+          this.googleLoading = false
+        })
     },
   },
 }

@@ -1,11 +1,19 @@
 <template>
   <div class="col-md-4  p-md-3" style="height: 100%; overflow: hidden;">
     <div style="display: flex; flex-direction: column; height: 100%;">
-      <div
-        class="border border-bottom-0 p-2"
-        style="flex-shrink: 0; text-align: right;"
-      >
-        <small>{{ viewerCount }} Viewers</small>
+      <div class="border border-bottom-0 p-2" style="flex-shrink: 0;">
+        <!-- <small>{{ viewerCount }} Viewers</small> -->
+        <b class="text-secondary">
+          {{ this.$store.state.token ? 'Live Chat' : 'Sign In to Chat' }}
+        </b>
+        <button
+          v-if="!socketConnected"
+          @click="getMessages"
+          style="float: right;"
+          class="btn btn-secondary btn-sm"
+        >
+          Retry
+        </button>
       </div>
       <div class="message-box border">
         <div
@@ -52,6 +60,7 @@
             <input
               type="text"
               v-model="message"
+              :disabled="!socketConnected"
               class="form-control"
               placeholder="Send Message"
               aria-label="Send Message"
@@ -99,12 +108,17 @@ export default {
   mounted() {
     this.getMessages()
   },
+  unmounted() {
+    if (this.socketConnected) this.webSocket.close()
+  },
   methods: {
     getMessages() {
+      this.messages = []
+      this.socketConnected = true
       this.webSocket = new WebSocket(this.messageURL)
       this.webSocket.onopen = () => {
         this.webSocket.send(
-          JSON.stringify({ token: this.$store.state.token, id: 'this.id' })
+          JSON.stringify({ token: this.$store.state.token, id: this.id })
         )
       }
 
@@ -132,7 +146,11 @@ export default {
       }
 
       this.webSocket.onclose = () => {
-        this.getMessages()
+        this.socketConnected = false
+        // setTimeout(() => {
+        //   return this.getMessages()
+        // }, 10000)
+        //return this.getMessages()
       }
     },
     sendMessage() {
@@ -157,6 +175,18 @@ export default {
   computed: {
     viewerCount() {
       return this.viewers.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    },
+    authToken() {
+      return this.$store.state.token
+    },
+  },
+  watch: {
+    authToken() {
+      this.messages = []
+      if (this.socketConnected) {
+        this.webSocket.close()
+        this.getMessages()
+      }
     },
   },
 }

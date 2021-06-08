@@ -204,7 +204,7 @@ export default {
   mounted() {
     this.disabled = true
     axios
-      .get('/payinfo', {
+      .get('/user/payinfo', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this.$store.state.token}`,
@@ -219,9 +219,10 @@ export default {
           this.contact = res.data.contacts.contact
           this.account_type = res.data.fund_accounts.account_type
           if (this.account_type == 'bank_account') {
-            this.account_number = res.data.fund_accounts.account_number
-            this.bname = res.data.fund_accounts.name
-            this.ifsc = res.data.fund_accounts.ifsc
+            this.account_number =
+              res.data.fund_accounts.bank_account.account_number
+            this.bname = res.data.fund_accounts.bank_account.name
+            this.ifsc = res.data.fund_accounts.bank_account.ifsc
           } else {
             this.vpa = res.data.fund_accounts.vpa.address
           }
@@ -248,33 +249,60 @@ export default {
   methods: {
     saveChanges() {
       this.loading = true
-      var fund_accounts = {}
+      // var fund_accounts = {}
+      // if (this.account_type == 'bank_account') {
+      //   fund_accounts = {
+      //     name: this.bname,
+      //     ifsc: this.ifsc,
+      //     account_number: this.account_number,
+      //   }
+      // } else {
+      //   fund_accounts = {
+      //     address: this.vpa,
+      //   }
+      // }
+      // const fd = {
+      //   contacts: {
+      //     name: this.name,
+      //     email: this.email,
+      //     contact: this.contact,
+      //   },
+      //   account_type: this.account_type,
+      //   fund_accounts: fund_accounts,
+      // }
+      const contact_info = {
+        name: this.name,
+        email: this.email,
+        contact: this.contact,
+      }
+      var fund_accounts_info = {}
       if (this.account_type == 'bank_account') {
-        fund_accounts = {
-          name: this.bname,
-          ifsc: this.ifsc,
-          account_number: this.account_number,
+        fund_accounts_info = {
+          account_type: 'bank_account',
+          bank_account: {
+            name: this.bname,
+            ifsc: this.ifsc,
+            account_number: this.account_number,
+          },
         }
       } else {
-        fund_accounts = {
-          address: this.vpa,
+        fund_accounts_info = {
+          account_type: 'vpa',
+          vpa: {
+            address: this.vpa,
+          },
         }
       }
-      const fd = {
-        contacts: {
-          name: this.name,
-          email: this.email,
-          contact: this.contact,
-        },
-        account_type: this.account_type,
-        fund_accounts: fund_accounts,
-      }
       axios
-        .post('/changepayinfo', fd, {
-          headers: {
-            Authorization: `Bearer ${this.$store.state.token}`,
-          },
-        })
+        .post(
+          '/change/payinfo',
+          { contacts: contact_info, fund_accounts: fund_accounts_info },
+          {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.token}`,
+            },
+          }
+        )
         .then(() => {
           this.loading = false
           this.dataAvailable = true

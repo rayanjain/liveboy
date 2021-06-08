@@ -57,20 +57,23 @@
         height="300"
         style="width: 100%; height: auto;"
       /> -->
-      <VideoPlayer :source="videoURL" />
+      <VideoPlayer
+        :source="
+          videourl[0] == '/'
+            ? `https://liveboy.centralindia.cloudapp.azure.com${videourl}`
+            : videourl
+        "
+      />
     </div>
     <div class="p-1">
       <!-- <h5 class="mb-0 text-truncate">
         {{ videotitle }}
       </h5> -->
       <div class="d-flex">
-        <div
-          class="bg-primary align-self-center"
-          style="width: 60px; height: 60px"
-        >
+        <div class="align-self-center" style="width: 60px; height: 60px">
           <img
             class="rounded-circle"
-            :src="useravatar"
+            :src="userinfo.useravatar"
             style="width: 100%;"
             alt="DP"
           />
@@ -80,7 +83,7 @@
           style="width: calc(100% - 60px);"
         >
           <h5 class="text-truncate">{{ videotitle }}</h5>
-          <b class="text-secondary">{{ username }}</b>
+          <b class="text-secondary">{{ userinfo.username }}</b>
         </div>
       </div>
     </div>
@@ -122,9 +125,10 @@ export default {
     paymentstatus: Boolean,
     thumbnail: String,
     videotitle: String,
-    username: String,
-    useravatar: String,
-    videoURL: String,
+    userinfo: Object,
+    //username: String,
+    //useravatar: String,
+    videourl: String,
     price: Number,
   },
   components: {
@@ -143,7 +147,7 @@ export default {
         this.paymentError = ''
 
         axios
-          .get(`/startpayment/${this.id}`, {
+          .get(`/payments/startpayment/${this.id}`, {
             headers: { Authorization: `Bearer ${this.authToken}` },
           })
           .then((response) => {
@@ -187,7 +191,9 @@ export default {
       this.gatewayLoading = true
       this.paymentError = ''
       axios
-        .post('/payment', resp)
+        .post('/payments/confirm', resp, {
+          headers: { Authorization: `Bearer ${this.authToken}` },
+        })
         .then(() => {
           this.$emit('reloadwatch')
         })

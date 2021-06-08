@@ -23,7 +23,7 @@
       <div class="row">
         <div class="p-0" style="width: 40px">
           <img
-            :src="useravatar"
+            :src="userinfo.useravatar"
             alt="DP"
             class="rounded-circle"
             width="100"
@@ -38,10 +38,10 @@
             </b>
           </div>
           <div class="text-truncate font-weight-light">
-            {{ username }}
+            {{ userinfo.username }}
           </div>
           <div style="display: inline-flex">
-            <small> {{ viewCount }} viewers .</small>
+            <small> {{ viewCount }} views .</small>
           </div>
           <div style="display: inline-flex">
             <small>started {{ timeBefore }} </small>
@@ -62,9 +62,10 @@ export default {
     _id: String,
     thumbnail: String,
     videotitle: String,
-    username: String,
-    useravatar: String,
-    viewers: Number,
+    // username: String,
+    // useravatar: String,
+    userinfo: Object,
+    views: Number,
     starttime: String,
     price: Number,
   },
@@ -73,12 +74,11 @@ export default {
       return dayjs(this.starttime).fromNow()
     },
     viewCount() {
-      if (this.viewers < 1000) return `${parseInt(this.viewers)}`
-      else if (this.viewers < 1000000)
-        return `${parseInt(this.viewers / 1000)}K`
-      else if (this.viewers < 1000000000)
-        return `${parseInt(this.viewers / 1000000)}M`
-      else return `${parseInt(this.viewers / 1000000000)}B`
+      if (this.views < 1000) return `${parseInt(this.views)}`
+      else if (this.views < 1000000) return `${parseInt(this.views / 1000)}K`
+      else if (this.views < 1000000000)
+        return `${parseInt(this.views / 1000000)}M`
+      else return `${parseInt(this.views / 1000000000)}B`
     },
   },
 }

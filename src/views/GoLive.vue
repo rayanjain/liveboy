@@ -72,7 +72,7 @@
           /> -->
           <div v-for="stream in streams" :key="stream._id">
             <CompletedStream
-              v-if="stream.status == 'completed'"
+              v-if="!stream.active"
               @reloadStreams="loadStreams()"
               v-bind="stream"
             />
@@ -232,7 +232,7 @@ export default {
       this.streamsLoading = true
       this.loadingError = false
       axios
-        .get('/getstreams', {
+        .get('/streams', {
           headers: { Authorization: `Bearer ${this.$store.state.token}` },
         })
         .then((response) => {

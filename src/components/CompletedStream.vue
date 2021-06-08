@@ -2,8 +2,7 @@
   <div class="card mb-3 border-success">
     <div class="card-header bg-body border-success">
       <strong>
-        What do Software engineers really do? The TRUTH // My Amazon
-        experience!!!
+        {{ videotitle }}
       </strong>
     </div>
     <div class="card-body">
@@ -32,14 +31,14 @@
             <strong
               >Total:
               {{
-                price % 1 == 0
+                total % 1 == 0
                   ? `&#8377; ${total}`
                   : `&#8377; ${total.toFixed(2)}`
               }}</strong
             ><br />
             (10%) -
             {{
-              price % 1 == 0
+              commission % 1 == 0
                 ? `&#8377; ${commission}`
                 : `&#8377; ${commission.toFixed(2)}`
             }} </small
@@ -47,7 +46,7 @@
           <strong class="text-success"
             >Earned:
             {{
-              price % 1 == 0
+              earned % 1 == 0
                 ? `&#8377; ${earned}`
                 : `&#8377; ${earned.toFixed(2)}`
             }} </strong
@@ -88,9 +87,6 @@ export default {
     thumbnail: String,
     price: Number,
     views: Number,
-    total: Number,
-    earned: Number,
-    commission: Number,
     starttime: String, //new Date(year, month, day, hours, minutes, seconds, milliseconds)
   },
   data() {
@@ -103,7 +99,7 @@ export default {
     getPaid() {
       this.loading = true
       axios
-        .get(`/getpaid/${this._id}`, {
+        .get(`payments/getpaid/${this._id}`, {
           headers: { Authorization: `Bearer ${this.$store.state.token}` },
         })
         .then(() => {
@@ -137,6 +133,15 @@ export default {
       else if (this.views < 1000000000)
         return `${parseInt(this.views / 1000000)}M`
       else return `${parseInt(this.views / 1000000000)}B`
+    },
+    earned() {
+      return this.price * this.views * 0.9
+    },
+    commission() {
+      return this.price * this.views * 0.1
+    },
+    total() {
+      return this.price * this.views
     },
   },
 }

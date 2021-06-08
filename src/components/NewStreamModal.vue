@@ -184,7 +184,7 @@ export default {
         fd.append('price', this.price)
         fd.append('image', this.image)
         axios
-          .post('/addstream', fd, {
+          .post('/streams', fd, {
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${this.$store.state.token}`,

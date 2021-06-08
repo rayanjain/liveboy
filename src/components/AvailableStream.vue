@@ -64,7 +64,7 @@
           <input
             type="text"
             class="form-control"
-            :value="serverurl"
+            :value="serverU"
             aria-label="Recipient's username"
             aria-describedby="button-addon2"
             readonly
@@ -201,7 +201,7 @@ export default {
     thumbnail: String,
     price: Number,
     views: Number,
-    earned: Number,
+    //earned: Number,
     serverurl: String,
     streamkey: String,
     starttime: String, //new Date(year, month, day, hours, minutes, seconds, milliseconds)
@@ -217,7 +217,7 @@ export default {
       navigator.clipboard.writeText(this.streamkey).then(() => {})
     },
     serverCopy() {
-      navigator.clipboard.writeText(this.serverurl).then(() => {})
+      navigator.clipboard.writeText(this.serverU).then(() => {})
     },
     videoLinkCopy() {
       navigator.clipboard
@@ -227,7 +227,7 @@ export default {
     stopStream() {
       this.loading = true
       axios
-        .delete(`/stream/${this._id}`, {
+        .delete(`/streams/${this._id}`, {
           headers: { Authorization: `Bearer ${this.$store.state.token}` },
         })
         .then(() => {
@@ -249,6 +249,12 @@ export default {
       else if (this.views < 1000000000)
         return `${parseInt(this.views / 1000000)}M`
       else return `${parseInt(this.views / 1000000000)}B`
+    },
+    earned() {
+      return this.price * this.views * 0.9
+    },
+    serverU() {
+      return `rtmp://liveboy.centralindia.cloudapp.azure.com:80${this.serverurl}`
     },
   },
 }
