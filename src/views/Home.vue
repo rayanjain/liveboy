@@ -1,55 +1,147 @@
 <template>
-  <!-- <NavBar /> -->
-  <div class="container-fluid mb-2">
-    <div class="row">
-      <div v-if="loadingStatus" class="col-sm-6 col-md-4 col-lg-3">
+  <div class="container mt-5 mb-5">
+    <div class="d-flex flex-md-row flex-column justify-content-center">
+      <div class="col-md-6 align-self-center pe-2">
+        <h1>Go Live. Get Paid.</h1>
+        Monazite your content without ads or sponsors. Get paid without a middle
+        man.<br />
+        <button class="btn btn-danger btn-lg mt-3 mb-3" @click="goLive">
+          Go Live
+        </button>
+      </div>
+      <div class="col-md-4">
+        <div
+          id="carouselExampleSlidesOnly"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="../assets/alisha.png" class="d-block w-100 border" />
+            </div>
+            <div class="carousel-item">
+              <img src="../assets/auzi.png" class="d-block w-100 border" />
+            </div>
+            <div class="carousel-item">
+              <img src="../assets/standy.png" class="d-block w-100 border" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="border-top mb-3" v-if="videoLoading || videoList.length > 0">
+    <div class="mt-3 ms-3">
+      <h5>Live Now</h5>
+    </div>
+    <div
+      class="d-flex"
+      style="overflow: auto; white-space: nowrap;"
+      v-if="videoLoading"
+    >
+      <div class="p-2 col-11 col-md-5 col-lg-3">
         <VideoCardLoading />
       </div>
-      <div v-if="loadingStatus" class="col-sm-6 col-md-4 col-lg-3">
+      <div class="p-2 col-11 col-md-5 col-lg-3">
         <VideoCardLoading />
       </div>
-      <div v-if="loadingStatus" class="col-sm-6 col-md-4 col-lg-3">
+      <div class="p-2 col-11 col-md-5 col-lg-3">
         <VideoCardLoading />
       </div>
-      <div v-if="loadingStatus" class="col-sm-6 col-md-4 col-lg-3">
+      <div class="p-2 col-11 col-md-5 col-lg-3">
         <VideoCardLoading />
       </div>
+    </div>
+    <div class="d-flex" style="overflow: auto; white-space: nowrap;" v-else>
       <div
-        v-else
+        class="p-2 col-11 col-md-5 col-lg-3"
         v-for="video in videoList"
         :key="video._id"
-        class="col-sm-6 col-md-4 col-lg-3"
       >
-        <videoCard
+        <VideoCard
           style="cursor: pointer;"
           @click="$router.push({ name: 'Watch', params: { id: video._id } })"
           v-bind="video"
         />
       </div>
     </div>
-    <div
-      v-if="networkError"
-      class="col-sm-7 col-md-5 col-lg-4"
-      style="margin: auto;"
-    >
-      <div class="card mt-2">
-        <div class="card-body text-center text-secondary">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100"
-            height="100"
-            fill="currentColor"
-            class="bi bi-wifi-off"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M10.706 3.294A12.546 12.546 0 0 0 8 3 12.44 12.44 0 0 0 .663 5.379a.485.485 0 0 0-.048.736.518.518 0 0 0 .668.05A11.448 11.448 0 0 1 8 4c.63 0 1.249.05 1.852.148l.854-.854zM8 6c-1.905 0-3.68.56-5.166 1.526a.48.48 0 0 0-.063.745.525.525 0 0 0 .652.065 8.448 8.448 0 0 1 3.51-1.27L8 6zm2.596 1.404l.785-.785c.63.24 1.228.545 1.785.907a.482.482 0 0 1 .063.745.525.525 0 0 1-.652.065 8.462 8.462 0 0 0-1.98-.932zM8 10l.934-.933a6.454 6.454 0 0 1 2.012.637c.285.145.326.524.1.75l-.015.015a.532.532 0 0 1-.611.09A5.478 5.478 0 0 0 8 10zm4.905-4.905l.747-.747c.59.3 1.153.645 1.685 1.03a.485.485 0 0 1 .048.737.518.518 0 0 1-.668.05 11.496 11.496 0 0 0-1.812-1.07zM9.02 11.78c.238.14.236.464.04.66l-.706.706a.5.5 0 0 1-.708 0l-.707-.707c-.195-.195-.197-.518.04-.66A1.99 1.99 0 0 1 8 11.5c.373 0 .722.102 1.02.28zm4.355-9.905a.53.53 0 1 1 .75.75l-10.75 10.75a.53.53 0 0 1-.75-.75l10.75-10.75z"
-            />
-          </svg>
-          <h5>Network Error</h5>
-          <button @click="loadVideos" class="btn btn-secondary m-5">
-            Retry
-          </button>
+  </div>
+  <div class=" pt-5 pb-5" style="background-color: #ffe6e6;">
+    <div class="d-flex flex-md-row flex-column justify-content-start">
+      <div class="col-md-6 col-10">
+        <img src="../assets/screen.png" class="w-100" />
+      </div>
+      <div class="col-md-6 align-self-center p-5">
+        <h2>Interact with your followers</h2>
+        Live messages to interact with your viewers during the live stream.
+        <br />
+      </div>
+    </div>
+  </div>
+  <div class="container pt-5 pb-5" style="align-content: center;">
+    <center>
+      <div class="col-md-3 col-6">
+        <div class="d-flex">
+          <div class="col-6 p-2">
+            <a href="https://streamlabs.com" target="_blank">
+              <img
+                src="../assets/streamlabs.png"
+                class="w-100"
+                style="border-radius: 20%;"
+              />
+            </a>
+          </div>
+          <div class="col-6 p-2">
+            <a href="https://obsproject.com" target="_blank">
+              <img
+                src="../assets/obs.png"
+                class="w-100"
+                style="border-radius: 50%;"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <h2>
+        Use your favourite streaming service to go live.
+      </h2>
+    </center>
+  </div>
+  <div class="pt-5 pb-5 bg-light">
+    <div class="container text-secondary">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <a href="/about.html" target="_blank" class="link-secondary">
+            About Us
+          </a>
+        </div>
+        <div class="col-md-4 mb-3">
+          <a href="/contact.html" target="_blank" class="link-secondary">
+            Contact Us
+          </a>
+        </div>
+        <div class="col-md-4 mb-3">
+          <a href="/pricing.html" target="_blank" class="link-secondary">
+            Pricing
+          </a>
+        </div>
+        <div class="col-md-4 mb-3">
+          <a href="/privacy.html" target="_blank" class="link-secondary">
+            Privacy Policy
+          </a>
+        </div>
+        <div class="col-md-4 mb-3">
+          <a href="/terms.html" target="_blank" class="link-secondary">
+            Tearms & Conditions
+          </a>
+        </div>
+        <div class="col-md-4 mb-3">
+          <a href="/refund.html" target="_blank" class="link-secondary">
+            Cancellation/Refund Ploicy
+          </a>
+        </div>
+        <div class="mb-3 mt-3">
+          <img src="../assets/vaido.png" height="45" style="opacity: 0.5;" />
         </div>
       </div>
     </div>
@@ -57,44 +149,113 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import axios from 'axios'
-//import NavBar from '@/components/NavBar'
 import VideoCard from '@/components/VideoCard'
 import VideoCardLoading from '@/components/VideoCardLoading'
+import axios from 'axios'
 
 export default {
-  name: 'Home',
   components: {
-    //NavBar,
     VideoCard,
     VideoCardLoading,
   },
+
   data() {
     return {
-      loadingStatus: false,
-      videoList: null,
-      networkError: false,
+      videoList: [],
+      videoLoading: false,
     }
   },
   mounted() {
     this.loadVideos()
   },
   methods: {
+    goLive() {
+      if (this.$store.state.token) {
+        this.$emit('golive')
+      } else {
+        this.$emit('signinfirst')
+      }
+    },
     loadVideos() {
-      this.loadingStatus = true
-      this.networkError = false
+      this.videoLoading = true
       axios
         .get('/')
         .then((response) => {
-          this.loadingStatus = false
           this.videoList = response.data
+          this.videoLoading = false
         })
-        .catch(() => {
-          this.loadingStatus = false
-          this.networkError = true
-        })
+        .catch(() => (this.videoLoading = false))
     },
   },
 }
+
+// // @ is an alias to /src
+// import axios from 'axios'
+// import VideoCard from '@/components/VideoCard'
+// import VideoCardLoading from '@/components/VideoCardLoading'
+
+// export default {
+//   name: 'Home',
+//   components: {
+//     //NavBar,
+//     VideoCard,
+//     VideoCardLoading,
+//   },
+//   data() {
+//     return {
+//       loadingStatus: false,
+//       videoList: null,
+//       networkError: false,
+//     }
+//   },
+//   mounted() {
+//     this.loadVideos()
+//   },
+//   methods: {
+//     goLive() {
+//       if (this.$store.state.token) {
+//         this.$emit('golive')
+//       } else {
+//         this.$emit('signinfirst')
+//       }
+//     },
+//     loadVideos() {
+//       this.loadingStatus = true
+//       this.networkError = false
+//       axios
+//         .get('/')
+//         .then((response) => {
+//           this.loadingStatus = false
+//           this.videoList = response.data
+//         })
+//         .catch(() => {
+//           this.loadingStatus = false
+//           this.networkError = true
+//         })
+//     },
+//   },
+// }
 </script>
+<style scoped>
+a {
+  text-decoration: none;
+}
+/* .videobox {
+  width: 90vw;
+}
+@media screen and (min-width: 480px) {
+  .videobox {
+    width: 45%;
+  }
+}
+@media screen and (min-width: 768px) {
+  .videobox {
+    width: 30%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .videobox {
+    width: 23%;
+  }
+} */
+</style>

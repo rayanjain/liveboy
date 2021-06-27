@@ -2,6 +2,7 @@
   <NavBar ref="navbar" />
   <router-view
     @signinfirst="$refs['navbar'].launchSignInModal()"
+    @golive="$refs['navbar'].goLiveButton()"
     @getuserinfo="$refs['navbar'].getUserInfo()"
   />
 </template>

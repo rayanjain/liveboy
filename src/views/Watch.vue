@@ -74,6 +74,7 @@
         :messageURL="
           `wss://liveboy.centralindia.cloudapp.azure.com${videoData.messageurl}`
         "
+        :username="videoData.userinfo.username"
         v-else
       />
     </div>
@@ -118,14 +119,16 @@ export default {
           this.videoLoading = false
         })
         .catch((err) => {
-          if (err.response) {
-            this.videoError = '404 Video Not Found'
-          } else {
-            this.videoError = 'Network Error'
-          }
+          // if (err.response) {
+          //   this.videoError = '404 Video Not Found'
+          // } else {
+          //   this.videoError = 'Network Error'
+          // }
           if (err.response) {
             if (err.response.status == 404) {
               this.videoError = '404 Video Not Found'
+            } else if (err.response.status == 403) {
+              this.videoError = 'Not Live Yet'
             } else {
               this.videoError = 'Network Error'
             }

@@ -60,7 +60,7 @@
       <VideoPlayer
         :source="
           videourl[0] == '/'
-            ? `https://liveboy.centralindia.cloudapp.azure.com${videourl}`
+            ? `http://192.168.29.145:3001${videourl}`
             : videourl
         "
       />

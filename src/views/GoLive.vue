@@ -72,7 +72,7 @@
           /> -->
           <div v-for="stream in streams" :key="stream._id">
             <CompletedStream
-              v-if="!stream.active"
+              v-if="stream.active == -1"
               @reloadStreams="loadStreams()"
               v-bind="stream"
             />

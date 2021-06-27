@@ -23,10 +23,56 @@
           style="height: 100%; overflow-y: scroll;"
         >
           <div v-for="(m, i) in messages" :key="i" class="p-2 border-bottom">
-            <b class="text-secondary"
-              >{{ m.username }}{{ m.message ? ':' : ' joined' }}</b
+            <b
+              class="text-secondary"
+              :class="{ 'text-danger': blockList.includes(m.username) }"
+              :id="i"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              :style="{
+                cursor:
+                  username == this.$store.state.userInfo.username
+                    ? 'pointer'
+                    : '',
+              }"
             >
+              {{ m.username }}
+              {{ m.message ? ':' : ' joined' }}
+            </b>
             {{ m.message }}
+            <ul
+              class="dropdown-menu"
+              :aria-labelledby="i"
+              v-if="
+                username == this.$store.state.userInfo.username &&
+                  m.username != username &&
+                  !blockList.includes(m.username)
+              "
+            >
+              <li>
+                <button
+                  @click="blockUser(m.username)"
+                  class="dropdown-item text-danger"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-exclamation-circle"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                    />
+                    <path
+                      d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
+                    />
+                  </svg>
+                  Block {{ m.username }}
+                </button>
+              </li>
+            </ul>
           </div>
           <div
             v-if="showDown"
@@ -94,7 +140,7 @@
 
 <script>
 export default {
-  props: ['id', 'messageURL'],
+  props: ['id', 'messageURL', 'username'],
   data() {
     return {
       message: '',
@@ -103,6 +149,7 @@ export default {
       showDown: false,
       webSocket: null, //new WebSocket(this.messageURL),
       socketConnected: false,
+      blockList: [],
     }
   },
   mounted() {
@@ -154,8 +201,10 @@ export default {
       }
     },
     sendMessage() {
-      this.webSocket.send(JSON.stringify({ message: this.message }))
-      this.message = ''
+      if (this.message != '') {
+        this.webSocket.send(JSON.stringify({ message: this.message }))
+        this.message = ''
+      }
     },
     goToBottom() {
       this.$refs['messageArea'].scrollTop = this.$refs[
@@ -170,6 +219,10 @@ export default {
         this.$refs['messageArea'].scrollHeight
       )
         this.showDown = false
+    },
+    blockUser(user) {
+      this.webSocket.send(JSON.stringify({ username: user }))
+      this.blockList.push(user)
     },
   },
   computed: {

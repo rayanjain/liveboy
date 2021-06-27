@@ -40,11 +40,13 @@
           <div class="text-truncate font-weight-light">
             {{ userinfo.username }}
           </div>
-          <div style="display: inline-flex">
-            <small> {{ viewCount }} views .</small>
-          </div>
-          <div style="display: inline-flex">
-            <small>started {{ timeBefore }} </small>
+          <div class="d-flex flex-wrap">
+            <div style="">
+              <small> {{ viewCount }} views .</small>
+            </div>
+            <div style="">
+              <small>started {{ timeBefore }} </small>
+            </div>
           </div>
         </div>
       </div>
