@@ -6,7 +6,7 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:3000' //'http://192.168.29.145:3000' //'https://liveboy.centralindia.cloudapp.azure.com' //
+axios.defaults.baseURL = 'https://liveboy.centralindia.cloudapp.azure.com' //'http://localhost:3000'
 
 createApp(App)
   .use(store)
