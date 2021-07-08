@@ -153,7 +153,7 @@ export default {
           .then((response) => {
             this.gatewayLoading = false
             const options = {
-              key: 'rzp_test_KRkts81uzp4oLp',
+              key: 'rzp_live_ohM23GNuPqUn2F',
               name: this.videotitle,
               description: this.username,
               image: this.thumbnail,

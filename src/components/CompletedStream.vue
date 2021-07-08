@@ -135,10 +135,10 @@ export default {
       else return `${parseInt(this.views / 1000000000)}B`
     },
     earned() {
-      return this.price * this.views * 0.9
+      return this.price * this.views * 0.85
     },
     commission() {
-      return this.price * this.views * 0.1
+      return this.price * this.views * 0.15
     },
     total() {
       return this.price * this.views
