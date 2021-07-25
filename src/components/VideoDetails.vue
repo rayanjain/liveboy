@@ -57,13 +57,14 @@
         height="300"
         style="width: 100%; height: auto;"
       /> -->
-      <VideoPlayer
+      <!-- <VideoPlayer
         :source="
           videourl[0] == '/'
             ? `http://192.168.29.145:3001${videourl}`
             : videourl
         "
-      />
+      /> -->
+      <VideoPlayer :source="videourl" />
     </div>
     <div class="p-1">
       <!-- <h5 class="mb-0 text-truncate">
@@ -153,7 +154,7 @@ export default {
           .then((response) => {
             this.gatewayLoading = false
             const options = {
-              key: 'rzp_live_ohM23GNuPqUn2F',
+              key: 'rzp_live_xVQkAQriW8RNlM',
               name: this.videotitle,
               description: this.username,
               image: this.thumbnail,

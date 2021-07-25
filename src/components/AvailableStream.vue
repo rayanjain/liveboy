@@ -20,8 +20,8 @@
             </button>
           </div>
         </div>
-        <a :href="`https://liveboy.netlify.app/watch/${_id}`" target="_blank">
-          https://liveboy.netlify.app/watch/{{ _id }}
+        <a :href="`https://vaido.in/watch/${_id}`" target="_blank">
+          https://vaido.in/watch/{{ _id }}
         </a>
       </div>
       <div class="d-flex">
@@ -221,7 +221,7 @@ export default {
     },
     videoLinkCopy() {
       navigator.clipboard
-        .writeText(`https://liveboy.netlify.app/watch/${this._id}`)
+        .writeText(`https://vaido.in/watch/${this._id}`)
         .then(() => {})
     },
     stopStream() {
@@ -254,7 +254,7 @@ export default {
       return this.price * this.views * 0.85
     },
     serverU() {
-      return `rtmp://liveboy.centralindia.cloudapp.azure.com:80${this.serverurl}`
+      return `rtmp://api.vaido.in${this.serverurl}`
     },
   },
 }

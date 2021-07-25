@@ -71,9 +71,7 @@
 
       <MessageBox
         :id="id"
-        :messageURL="
-          `wss://liveboy.centralindia.cloudapp.azure.com${videoData.messageurl}`
-        "
+        :messageURL="`wss://api.vaido.in${videoData.messageurl}`"
         :username="videoData.userinfo.username"
         v-else
       />
@@ -112,6 +110,7 @@ export default {
       axios
         .get(`/watch/${this.id}`, {
           headers: { Authorization: `Bearer ${this.authToken}` },
+          withCredentials: true,
         })
         .then((response) => {
           this.videoData = response.data
