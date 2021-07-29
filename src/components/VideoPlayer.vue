@@ -16,7 +16,7 @@
     style="width: 100%;"
     playsinline
   >
-    <source :src="source" type="application/vnd.apple.mpegurl" />
+    <!-- <source :src="source" type="application/vnd.apple.mpegurl" /> -->
   </video>
 </template>
 
@@ -41,6 +41,11 @@ export default {
       userActions: {
         hotkeys: true,
       },
+    })
+    this.player.src({
+      src: this.source,
+      type: 'application/vnd.apple.mpegurl',
+      withCredentials: true,
     })
   },
 }
