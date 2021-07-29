@@ -44,7 +44,7 @@ export default {
     })
     this.player.src({
       src: this.source,
-      type: 'application/vnd.apple.mpegurl',
+      type: 'application/x-mpegURL',
       withCredentials: true,
     })
   },
