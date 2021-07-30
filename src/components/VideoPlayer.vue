@@ -36,7 +36,7 @@ export default {
   mounted() {
     let video = this.$refs['video']
     this.player = videojs(video, {
-      // autoplay: true,
+      autoplay: true,
       controls: true,
       userActions: {
         hotkeys: true,
