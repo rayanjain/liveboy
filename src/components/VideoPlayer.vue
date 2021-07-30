@@ -16,7 +16,7 @@
     style="width: 100%;"
     playsinline
   >
-    <!-- <source :src="source" type="application/vnd.apple.mpegurl" /> -->
+    <source :src="source" type="application/x-mpegURL" />
   </video>
 </template>
 
@@ -36,17 +36,22 @@ export default {
   mounted() {
     let video = this.$refs['video']
     this.player = videojs(video, {
-      autoplay: true,
+      // autoplay: true,
       controls: true,
       userActions: {
         hotkeys: true,
       },
+      html5: {
+        vhs: {
+          withCredentials: true,
+        },
+      },
     })
-    this.player.src({
-      src: this.source,
-      type: 'application/x-mpegURL',
-      withCredentials: true,
-    })
+  },
+  beforeUnmount() {
+    if (this.player) {
+      this.player.dispose()
+    }
   },
 }
 </script>
