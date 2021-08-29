@@ -132,7 +132,7 @@
         </div>
         <div class="col-md-4 mb-3">
           <a href="/terms.html" target="_blank" class="link-secondary">
-            Tearms & Conditions
+            Terms & Conditions
           </a>
         </div>
         <div class="col-md-4 mb-3">
